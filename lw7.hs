@@ -26,8 +26,8 @@ type Position = Array Item Location
 -- goalPosition = listArray (Wolf, Farmer) [R, R, R, R]
 
 -- b) фермер перевозит волка, козла и капусту на другой берег, а сам возвращается.
--- startPosition = listArray (Wolf, Farmer) [L, L, L, L]
--- goalPosition = listArray (Wolf, Farmer) [R, R, R, L] -- wrong
+startPosition = listArray (Wolf, Farmer) [L, L, L, L]
+goalPosition = listArray (Wolf, Farmer) [R, R, R, L] -- wrong
 
 -- c) фермер перевозит на другой берег волка и козла, а капуста уже находится на том берегу.
 -- startPosition = listArray (Wolf, Farmer) [L, L, R, L]
@@ -74,8 +74,8 @@ solution = head $ filter ((==goalPosition).head) $ concat $ search
 showSolution = sequence $ map (putStrLn.show.assocs) solution
 
 main = do
-    if wrongPosition startPosition then sequence $ [print ["wrong position startPosition"]]
-    else if wrongPosition goalPosition then sequence $ [print ["wrong position goalPosition"]]
+    if wrongPosition startPosition then sequence $ [print "wrong position startPosition"]
+    else if wrongPosition goalPosition then sequence $ [print "wrong position goalPosition"]
     else showSolution
 
 
