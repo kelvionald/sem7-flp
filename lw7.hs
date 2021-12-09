@@ -22,12 +22,12 @@ type Position = Array Item Location
 -- начальная и целевая позиция
 
 -- а) фермер перевозит волка, козла и капусту на другой берег.
--- startPosition = listArray (Wolf, Farmer) [L, L, L, L]
--- goalPosition = listArray (Wolf, Farmer) [R, R, R, R]
+startPosition = listArray (Wolf, Farmer) [L, L, L, L]
+goalPosition = listArray (Wolf, Farmer) [R, R, R, R]
 
 -- b) фермер перевозит волка, козла и капусту на другой берег, а сам возвращается.
-startPosition = listArray (Wolf, Farmer) [L, L, L, L]
-goalPosition = listArray (Wolf, Farmer) [R, R, R, L] -- wrong
+-- startPosition = listArray (Wolf, Farmer) [L, L, L, L]
+-- goalPosition = listArray (Wolf, Farmer) [R, R, R, L] -- wrong
 
 -- c) фермер перевозит на другой берег волка и козла, а капуста уже находится на том берегу.
 -- startPosition = listArray (Wolf, Farmer) [L, L, R, L]
