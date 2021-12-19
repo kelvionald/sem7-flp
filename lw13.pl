@@ -241,9 +241,9 @@ path5(Start, Goal, Path):-
 
 % 5.6 #1 Найти и напечатать все возможные пути из комнаты А в комнату L.
 path6(Goal, Goal, Path):-
-    reverse(Path, Answer), 
+    reverse(Path, Reversed), 
     write('Path: '),
-    write(Answer),
+    write(Reversed),
     nl,
     !
     .
@@ -256,8 +256,88 @@ path6(Start, Goal, Path):-
 
 
 % 5.7 #2  В некоторых комнатах есть окна. Например, в комнате H их целых три.  Надо посчитать количество окон в комнатах, через которые лежит путь  к комнате L.
+windows(a, 0).
+windows(b, 1).
+windows(c, 1).
+windows(d, 0).
+windows(e, 0).
+windows(f, 1).
+windows(g, 0).
+windows(h, 3).
+windows(i, 1).
+windows(j, 1).
+windows(k, 2).
+windows(l, 1).
 
-% 5.8 #2  Найти самый короткий путь к комнате L, используя assert и retract. Идея состоит в следующем: надо задать заведомо самый длинный путь way(М), а затем, перебирая все возможные пути к L, заменять way(M) на более короткий,используя при этом assert и retract.
+path7_help(Goal, Goal, Path, Windows):- 
+    reverse(Path, Reversed), 
+    write('Path: '), 
+    write(Reversed), nl,
+    write('Windows: '), 
+    write(Windows), 
+    nl, 
+    !
+    .
+path7_help(Start, Goal, Path, Windows):-
+    (door(Start, Tmp); door(Tmp, Start)),
+    not(member(Tmp, Path)), 
+    windows(Tmp, CurrWindows),
+    Acc is Windows + CurrWindows,
+    path7_help(Tmp, Goal, [Tmp|Path], Acc),
+    !
+    .
+path7(Start, Goal, Path):-
+    windows(Start, Acc),
+    path7_help(Start, Goal, Path, Acc)
+    .
+% path7(a,l,[]).
+
+
+% 5.8 #2  Найти самый короткий путь к комнате L, используя assert и retract. 
+% Идея состоит в следующем: надо задать заведомо самый длинный путь way(М), а 
+% затем, перебирая все возможные пути к L, заменять way(M) на более короткий, 
+% используя при этом assert и retract.
+
+path_temp1(Goal, Goal, Path, A):- 
+    reverse(Path, A), 
+    length(A, B), 
+    way(C), 
+    length(C, D), 
+    B < D, 
+    retract(way(C)), 
+    assert(way(A)), 
+    !
+    .
+path_temp1(Goal, Goal, Path, A):-
+    reverse(Path, A), 
+    !
+    .
+path_temp1(Start, Goal, Path, A):-
+    (door(Start, Tmp); door(Tmp, Start)),
+    not(member(Tmp, Path)), 
+    path_temp1(Tmp, Goal, [Tmp|Path], A)
+    .
+
+path8_init(Goal, Goal, Path, A):- 
+    reverse(Path, A), 
+    assert(way(A)), 
+    !
+    .
+path8_init(Start, Goal, Path, A):- 
+    (door(Start, Tmp); door(Tmp, Start)), 
+    not(member(Tmp, Path)), 
+    path8_init(Tmp, Goal, [Tmp|Path], A), 
+    !.
+
+path8(Start, Goal, Path):-
+    path8_init(Start, Goal, Path, _),
+    path_temp1(Start, Goal, Path, A),
+    way(A)
+    .
+
+% path8(a, l, [])
+
+
 
 % 5.9 #2  Сделать то же, что в пункте 5.8, но без assert и retract.
 
