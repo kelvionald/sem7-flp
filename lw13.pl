@@ -174,7 +174,7 @@ path2(Start, Goal, Path):-
     append(Path, [Tmp], NewPath),
     path2(Tmp, Goal, NewPath)
     .
-% path2(a,b,[]).
+% path2(a,g,[]).
 
 
 % 5.3 #1 При входе в комнату X печатать "entering room X".
@@ -207,6 +207,7 @@ path4(Goal, Goal, Path):-
     write('Length: '),
     write(PathLen),
     nl,
+    write('Path: '),
     write(Reversed),
     nl,
     !
@@ -217,10 +218,42 @@ path4(Start, Goal, Path):-
     path4(Tmp, Goal, [Tmp|Path]),
     !
     .
+% path5(a,g,[]).
+
 
 % 5.5 #1 Пройти к комнате L ,не входя в комнату E.
+path5(Goal, Goal, Path):- 
+    reverse(Path, Reversed), 
+    write('Path: '),
+    write(Reversed), 
+    nl, 
+    !
+    .
+path5(Start, Goal, Path):- 
+    Start \= e, 
+    (door(Start, Tmp); door(Tmp, Start)), 
+    not(member(Tmp, Path)),
+    path5(Tmp, Goal, [Tmp|Path]), 
+    !
+    .
+% path5(a,l,[]).
 
-% 5.6 #1 Найти и напечатать все возможные пути из комнаты А  в комнату L.
+
+% 5.6 #1 Найти и напечатать все возможные пути из комнаты А в комнату L.
+path6(Goal, Goal, Path):-
+    reverse(Path, Answer), 
+    write('Path: '),
+    write(Answer),
+    nl,
+    !
+    .
+path6(Start, Goal, Path):- 
+    (door(Start, Tmp); door(Tmp, Start)), 
+    not(member(Tmp, Path)), 
+    path6(Tmp, Goal, [Tmp|Path])
+    .
+% path6(a, l, [])
+
 
 % 5.7 #2  В некоторых комнатах есть окна. Например, в комнате H их целых три.  Надо посчитать количество окон в комнатах, через которые лежит путь  к комнате L.
 
