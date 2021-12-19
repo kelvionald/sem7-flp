@@ -202,6 +202,14 @@ common(L1, L2, L3):-
 %       дает ответ
 %       X=[a,f]
 
+% most_oft(L, X):-
+%     qsort(L, X)
+%     .
+
+
+
+
+
 
 
 
