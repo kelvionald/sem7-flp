@@ -297,8 +297,7 @@ path7(Start, Goal, Path):-
 % Идея состоит в следующем: надо задать заведомо самый длинный путь way(М), а 
 % затем, перебирая все возможные пути к L, заменять way(M) на более короткий, 
 % используя при этом assert и retract.
-
-path_temp1(Goal, Goal, Path, A):- 
+path8_cmp(Goal, Goal, Path, A):- 
     reverse(Path, A), 
     length(A, B), 
     way(C), 
@@ -308,14 +307,14 @@ path_temp1(Goal, Goal, Path, A):-
     assert(way(A)), 
     !
     .
-path_temp1(Goal, Goal, Path, A):-
+path8_cmp(Goal, Goal, Path, A):-
     reverse(Path, A), 
     !
     .
-path_temp1(Start, Goal, Path, A):-
+path8_cmp(Start, Goal, Path, A):-
     (door(Start, Tmp); door(Tmp, Start)),
     not(member(Tmp, Path)), 
-    path_temp1(Tmp, Goal, [Tmp|Path], A)
+    path8_cmp(Tmp, Goal, [Tmp|Path], A)
     .
 
 path8_init(Goal, Goal, Path, A):- 
@@ -331,15 +330,40 @@ path8_init(Start, Goal, Path, A):-
 
 path8(Start, Goal, Path):-
     path8_init(Start, Goal, Path, _),
-    path_temp1(Start, Goal, Path, A),
+    path8_cmp(Start, Goal, Path, A),
     way(A)
     .
-
 % path8(a, l, [])
 
 
-
 % 5.9 #2  Сделать то же, что в пункте 5.8, но без assert и retract.
+path_temp(Y, Y, T, L):-
+    length(T, I), I < L,
+    reverse(T, Reversed), 
+    write('Short path: '),
+    write(Reversed), 
+    nl, 
+    !
+    .
+path_temp(X, Y, T, L):-
+    (door(X, Z); door(Z, X)),
+    length(T, I), 
+    I < L, 
+    not(member(Z, T)), 
+    path_temp(Z, Y, [Z|T], L), 
+    !
+    .
+
+path9_temp(X, Y, Z):- 
+    not(path_temp(X, Y, [X], Z)), 
+    I is Z + 1, 
+    !, 
+    path9_temp(X, Y, I)
+    .
+
+path9(X, Y):- 
+    path9_temp(X, Y, 0)
+    .
 
 % 5.10 #4 Найти кратчайший путь, проходящий через все комнаты с кладом   (клад в комнате обозначается знаком $)
 
